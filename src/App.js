@@ -1,16 +1,12 @@
-import logo from "./logo.svg";
+import React, { useEffect, useState , Fragment} from "react";
+import Product from "./components/ProductsComponent";
 import "./App.css";
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-      </header>
-    </div>
+    <Fragment>
+      <Product />
+    </Fragment>
   );
-}
-
+};
 export default App;
