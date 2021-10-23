@@ -4,50 +4,68 @@ import * as ReactBootstrap from "react-bootstrap";
 
 const Product = () => {
   const [listProducts, setListProducts] = useState([]);
-  const [spinner, setSpinner] = useState(false);
+  const [load, setLoad] = useState(false);
 
-  useEffect(() => {
-    axios
+  useEffect(async () => {
+    await axios
       .get("https://vending-machine-test.vercel.app/api/products")
       .then((res) => {
         // console.log(res);
         setListProducts(res.data.data);
-        
       })
       .catch((e) => {
         console.log(e);
       });
-      //State value to show spinner animation
-      setSpinner(true); 
+    //State value to show spinner animation
+    setLoad(true);
   }, []);
 
+  const divStyle = {};
   //  console.log(listProducts);
   return (
-    <div>
+    <div className="container">
       <h2>Products</h2>
-      <ReactBootstrap.Spinner animation="border" role="status">
-        <span className="visually-hidden">Loading...</span>
-      </ReactBootstrap.Spinner>
-      <ReactBootstrap.Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Preparation Time</th>
-            <th>Image</th>
-          </tr>
-        </thead>
-        <tbody>
-          {listProducts.map((e) => (
-            <tr key={e.id}>
-              <td>{e.id}</td>
-              <td>{e.name}</td>
-              <td>{e.preparation_time}</td>
-              <td>{e.thumbnail}</td>
+      {load ? (
+        <ReactBootstrap.Table striped bordered hover responsive="lg" >
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Preparation Time</th>
+              <th>Image</th>
+              <th>Option</th>
             </tr>
-          ))}
-        </tbody>
-      </ReactBootstrap.Table>
+          </thead>
+          <tbody>
+            {
+              listProducts.map((e) => (
+                <tr key={e.id}>
+                  <td>
+                    <b>{e.id}</b>
+                  </td>
+                  <td>
+                    <b>{e.name}</b>
+                  </td>
+                  <td>{e.preparation_time}</td>
+                  <td>
+                    <img
+                      style={{ width: "3rem", height: "3rem" }}
+                      src={e.thumbnail}
+                    />
+                  </td>
+                  <td>
+                    <ReactBootstrap.Button variant="outline-success">Add</ReactBootstrap.Button >{" "}
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </ReactBootstrap.Table>
+      ) : (
+        <ReactBootstrap.Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </ReactBootstrap.Spinner>
+      )}
     </div>
   );
 };
