@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Orders from "./OderComponent";
 import * as ReactBootstrap from "react-bootstrap";
 
 const Product = () => {
   const [listProducts, setListProducts] = useState([]);
   const [load, setLoad] = useState(false);
+  const [itemSelected, setSelectedItem] = useState([]);
 
   useEffect(async () => {
     await axios
@@ -20,16 +22,24 @@ const Product = () => {
     setLoad(true);
   }, []);
 
-  const divStyle = {};
-  //  console.log(listProducts);
+  function getRow(e) {
+    setSelectedItem(e);
+  }
+
+  useEffect(() => {
+    getRow();
+  }, []);
+
+  console.log(itemSelected);
+
   return (
     <div className="container">
       <h2>Products</h2>
       {load ? (
-        <ReactBootstrap.Table striped bordered hover responsive="lg" >
+        <ReactBootstrap.Table striped bordered hover responsive="lg">
           <thead>
             <tr>
-              <th>ID</th>
+              <th>#</th>
               <th>Name</th>
               <th>Preparation Time</th>
               <th>Image</th>
@@ -37,28 +47,31 @@ const Product = () => {
             </tr>
           </thead>
           <tbody>
-            {
-              listProducts.map((e) => (
-                <tr key={e.id}>
-                  <td>
-                    <b>{e.id}</b>
-                  </td>
-                  <td>
-                    <b>{e.name}</b>
-                  </td>
-                  <td>{e.preparation_time}</td>
-                  <td>
-                    <img
-                      style={{ width: "3rem", height: "3rem" }}
-                      src={e.thumbnail}
-                    />
-                  </td>
-                  <td>
-                    <ReactBootstrap.Button variant="outline-success">Add</ReactBootstrap.Button >{" "}
-                  </td>
-                </tr>
-              ))
-            }
+            {listProducts.map((e, i) => (
+              <tr key={e.id}>
+                <td>
+                  <b>{(i += 1)}</b>
+                </td>
+                <td>
+                  <b>{e.name}</b>
+                </td>
+                <td>{e.preparation_time}</td>
+                <td>
+                  <img
+                    style={{ width: "3rem", height: "3rem" }}
+                    src={e.thumbnail}
+                  />
+                </td>
+                <td>
+                  <ReactBootstrap.Button
+                    onClick={() => getRow(e)}
+                    variant="outline-success"
+                  >
+                    Add
+                  </ReactBootstrap.Button>{" "}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </ReactBootstrap.Table>
       ) : (
@@ -66,6 +79,27 @@ const Product = () => {
           <span className="visually-hidden">Loading...</span>
         </ReactBootstrap.Spinner>
       )}
+
+      <ReactBootstrap.Table name="orders-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Preparation Time</th>
+            <th>Image</th>
+            <th>Option</th>
+          </tr>
+        </thead>
+        <tbody>
+          {itemSelected ? (
+            <Orders row={itemSelected}></Orders>
+          ) : (
+            <tr>
+              <td>NO ORDERS</td>
+            </tr>
+          )}
+        </tbody>
+      </ReactBootstrap.Table>
     </div>
   );
 };
