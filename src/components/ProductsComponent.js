@@ -7,10 +7,9 @@ const Product = () => {
   const [listProducts, setListProducts] = useState([]);
   const [load, setLoad] = useState(false);
   const [itemSelected, setSelectedItem] = useState([]);
-  
 
-  useEffect( () => {
-     axios
+  useEffect(() => {
+    axios
       .get("https://vending-machine-test.vercel.app/api/products")
       .then((res) => {
         // console.log(res);
@@ -26,7 +25,6 @@ const Product = () => {
   function getRow(e) {
     setSelectedItem([...itemSelected, e]);
   }
-
 
   //console.log(itemSelected);
 
@@ -79,7 +77,13 @@ const Product = () => {
         </ReactBootstrap.Spinner>
       )}
       <h2>Orders</h2>
-      <ReactBootstrap.Table striped bordered hover responsive="lg" name="orders-table">
+      <ReactBootstrap.Table
+        striped
+        bordered
+        hover
+        responsive="lg"
+        name="orders-table"
+      >
         <thead>
           <tr>
             <th>#</th>
@@ -99,7 +103,8 @@ const Product = () => {
           )}
         </tbody>
       </ReactBootstrap.Table>
-    </div>
+      
+    </div>,
   ];
 };
 
