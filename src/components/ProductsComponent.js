@@ -7,9 +7,10 @@ const Product = () => {
   const [listProducts, setListProducts] = useState([]);
   const [load, setLoad] = useState(false);
   const [itemSelected, setSelectedItem] = useState([]);
+  
 
-  useEffect(async () => {
-    await axios
+  useEffect( () => {
+     axios
       .get("https://vending-machine-test.vercel.app/api/products")
       .then((res) => {
         // console.log(res);
@@ -26,7 +27,8 @@ const Product = () => {
     setSelectedItem([...itemSelected, e]);
   }
 
-  console.log(itemSelected);
+
+  //console.log(itemSelected);
 
   return [
     <div className="container">
@@ -55,6 +57,7 @@ const Product = () => {
                 <td>
                   <img
                     style={{ width: "3rem", height: "3rem" }}
+                    alt={e.name}
                     src={e.thumbnail}
                   />
                 </td>
@@ -75,19 +78,19 @@ const Product = () => {
           <span className="visually-hidden">Loading...</span>
         </ReactBootstrap.Spinner>
       )}
-
-      <ReactBootstrap.Table name="orders-table">
+      <h2>Orders</h2>
+      <ReactBootstrap.Table striped bordered hover responsive="lg" name="orders-table">
         <thead>
           <tr>
             <th>#</th>
             <th>Name</th>
             <th>Preparation Time</th>
             <th>Image</th>
-            <th>Option</th>
+            <th>Time</th>
           </tr>
         </thead>
         <tbody>
-          {itemSelected ? (
+          {itemSelected.length > 0 ? (
             <Orders row={itemSelected}></Orders>
           ) : (
             <tr>
