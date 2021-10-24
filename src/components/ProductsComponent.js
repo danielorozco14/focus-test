@@ -23,16 +23,12 @@ const Product = () => {
   }, []);
 
   function getRow(e) {
-    setSelectedItem(e);
+    setSelectedItem([...itemSelected, e]);
   }
-
-  useEffect(() => {
-    getRow();
-  }, []);
 
   console.log(itemSelected);
 
-  return (
+  return [
     <div className="container">
       <h2>Products</h2>
       {load ? (
@@ -101,7 +97,7 @@ const Product = () => {
         </tbody>
       </ReactBootstrap.Table>
     </div>
-  );
+  ];
 };
 
 export default Product;
