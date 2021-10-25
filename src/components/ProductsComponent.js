@@ -8,15 +8,15 @@ const Product = () => {
   const [load, setLoad] = useState(false);
   const [itemSelected, setSelectedItem] = useState([]);
 
-  useEffect(() => {
-    axios
+  useEffect(async() => {
+    await axios
       .get("https://vending-machine-test.vercel.app/api/products")
       .then((res) => {
-        // console.log(res);
         setListProducts(res.data.data);
       })
       .catch((e) => {
         console.log(e);
+        alert("An Error ocurred while fetching data from the API")
       });
     //State value to show spinner animation
     setLoad(true);
@@ -29,11 +29,12 @@ const Product = () => {
   //console.log(itemSelected);
 
   return [
-    <div className="container">
+    <div className="col-xs-6">
       <h2>Products</h2>
       {load ? (
-        <ReactBootstrap.Table striped bordered hover responsive="lg">
+        <ReactBootstrap.Table striped bordered hover responsive="sm" className="col-xs-6">
           <thead>
+          
             <tr>
               <th>#</th>
               <th>Name</th>
@@ -76,15 +77,19 @@ const Product = () => {
           <span className="visually-hidden">Loading...</span>
         </ReactBootstrap.Spinner>
       )}
-      <h2>Orders</h2>
+      
       <ReactBootstrap.Table
         striped
         bordered
         hover
-        responsive="lg"
+        responsive="sm"
         name="orders-table"
+        className="col-xs-6"
       >
         <thead>
+        <caption>
+              <h2>Preparing Orders</h2>
+              </caption>
           <tr>
             <th>#</th>
             <th>Name</th>

@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState, Fragment } from "react";
 import * as ReactBootstrap from "react-bootstrap";
-import Dispatched from "./DispatchedComponent";
 
 const Orders = (props) => {
   const [count, setCount] = useState(0);
@@ -32,8 +31,6 @@ const Orders = (props) => {
     }
   };
 
-  //console.log(props);
-  console.log(dispatch);
 
   return (
     <Fragment>
@@ -59,9 +56,58 @@ const Orders = (props) => {
         </tr>
       ))}
 
-      <h2>Orders Dispatched</h2>
-
-      <Dispatched orders={dispatch}/>
+      <ReactBootstrap.Table
+        striped
+        bordered
+        hover
+        responsive="lg"
+        name="orders-table"
+      >
+        <thead>
+          <caption>
+            <h2>Orders Dispatched</h2>
+          </caption>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Preparation Time</th>
+            <th>Image</th>
+          </tr>
+        </thead>
+        <tbody>
+          {dispatch.length > 1
+            ? dispatch.map((e, i) => (
+                <tr key={(i = i + 1)}>
+                  <td>{e[0].id}</td>
+                  <td>{e[0].name}</td>
+                  <td>{e[0].preparation_time}</td>
+                  <td>
+                    {" "}
+                    <img
+                      style={{ width: "3rem", height: "3rem" }}
+                      alt={e[0].name}
+                      src={e[0].thumbnail}
+                    />
+                  </td>
+                </tr>
+              ))
+            : dispatch.map((e, i) => (
+                <tr key={(i = i + 1)}>
+                  <td>{e.id}</td>
+                  <td>{e.name}</td>
+                  <td>{e.preparation_time}</td>
+                  <td>
+                    {" "}
+                    <img
+                      style={{ width: "3rem", height: "3rem" }}
+                      alt={e.name}
+                      src={e.thumbnail}
+                    />
+                  </td>
+                </tr>
+              ))}
+        </tbody>
+      </ReactBootstrap.Table>
     </Fragment>
   );
 };
